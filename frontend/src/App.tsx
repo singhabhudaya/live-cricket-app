@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import './styles.css'
 
-const API = (p: string) => (import.meta.env.VITE_API_URL || 'http://localhost:3000/api') + p
-const WS  = (import.meta.env.VITE_WS_URL || 'http://localhost:3000') + '/ws'
+const API = (p: string) => (import.meta.env.VITE_API_URL || 'https://live-cricket-app.onrender.com') + p
+const WS  = (import.meta.env.VITE_WS_URL || 'https://live-cricket-app.onrender.com') + '/ws'
 
 type Match = {
   id:number; code:number; teamA:string; teamB:string;
