@@ -1,21 +1,24 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
 
-@WebSocketGateway({ cors: true, namespace: '/ws' })
+function parseOrigins() {
+  return (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+const allowed = new Set(parseOrigins());
+
+@WebSocketGateway({
+  path: '/ws',
+  cors: {
+    origin: (origin: string | undefined, cb: (err: any, ok?: boolean) => void) => {
+      if (!origin) return cb(null, true);
+      cb(null, allowed.has(origin));
+    },
+  },
+})
 export class RealtimeGateway {
   @WebSocketServer() server: Server;
-
-  @SubscribeMessage('join')
-  handleJoin(@MessageBody() payload: { matchCode: number }, @ConnectedSocket() client: Socket) {
-    client.join(`match:${payload.matchCode}`);
-    return { ok: true };
-  }
-
-  broadcastCommentary(matchCode: number, entry: any) {
-    this.server.to(`match:${matchCode}`).emit('commentary:new', entry);
-  }
-
-  broadcastMatchUpdate(matchCode: number, payload: any) {
-    this.server.to(`match:${matchCode}`).emit('match:update', payload);
-  }
+  // ... your existing gateway code
 }
