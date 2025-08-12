@@ -107,7 +107,9 @@ export class MatchService {
     if (!match) throw new BadRequestException('Match not found');
     if (match.status === 'COMPLETED') throw new BadRequestException('Match completed');
 
-    const innings = match.currentInnings;
+    // FIX: ensure innings is a number (Render build error was here)
+    const innings: number = match.currentInnings ?? 1;
+
     const { i1, i2 } = await this.computeSums(match.id);
     const current = innings === 1 ? i1 : i2;
 
@@ -131,7 +133,7 @@ export class MatchService {
     const entry = await this.prisma.commentary.create({
       data: {
         matchId: match.id,
-        innings,
+        innings, // now guaranteed number
         over,
         ball,
         event: data.event,
@@ -193,11 +195,3 @@ export class MatchService {
             data: { status: 'COMPLETED', winner: 'TIE', result },
           });
           this.rt.broadcastMatchUpdate(code, { status: 'COMPLETED', winner: 'TIE', result });
-        }
-      }
-    }
-
-    this.rt.broadcastCommentary(code, entry);
-    return entry;
-  }
-}
