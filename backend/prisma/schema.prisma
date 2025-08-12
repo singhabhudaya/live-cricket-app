@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Sequence {
+  id       Int  @id @default(1)
+  matchSeq Int  @default(1000)
+}
+
+model Team {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  players   Player[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Player {
+  id        Int       @id @default(autoincrement())
+  name      String
+  teamId    Int
+  team      Team      @relation(fields: [teamId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Match {
+  id             Int           @id @default(autoincrement())
+  code           Int           @unique
+  teamA          String
+  teamB          String
+  oversPerSide   Int
+  status         String        @default("LIVE")  // LIVE | COMPLETED
+  currentInnings Int           @default(1)       // 1 or 2
+  winner         String?                         // "A" | "B" | "TIE"
+  result         String?                         // human-readable summary
+  commentary     Commentary[]
+  innings        Innings[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Innings {
+  id            Int       @id @default(autoincrement())
+  matchId       Int
+  number        Int
+  battingTeamId Int?
+  bowlingTeamId Int?
+  deliveries    Delivery[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  match         Match     @relation(fields: [matchId], references: [id])
+
+  @@index([matchId, number])
+}
+
+model Delivery {
+  id           Int       @id @default(autoincrement())
+  inningsId    Int
+  over         Int
+  ball         Int
+  outcome      String
+  runsBatsman  Int       @default(0)
+  runsExtras   Int       @default(0)
+  wicket       Boolean   @default(false)
+  notes        String?
+  createdAt    DateTime  @default(now())
+
+  innings      Innings   @relation(fields: [inningsId], references: [id])
+
+  @@index([inningsId, over, ball])
+}
+
+model Commentary {
+  id         Int       @id @default(autoincrement())
+  matchId    Int
+  innings    Int       @default(1)   // 1 or 2
+  over       Int
+  ball       Int
+  event      String                  // DOT, ONE, TWO, THREE, FOUR, SIX, WIDE, NO_BALL, BYE, LEG_BYE, WICKET
+  runsBat    Int       @default(0)
+  runsExtra  Int       @default(0)
+  wicket     Boolean   @default(false)
+  notes      String?
+  createdAt  DateTime  @default(now())
+  match      Match     @relation(fields: [matchId], references: [id])
+
+  @@index([matchId, innings, over, ball])
+}

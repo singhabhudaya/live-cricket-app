@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.build/
+.cache/
+coverage/
+ECHO is on.
+.env
+.env.*
+!backend/.env.example
+!frontend/.env.example
+ECHO is on.
+backend/prisma/dev.db
+backend/prisma/*.db*
+ECHO is on.
+*.log
+.DS_Store
+Thumbs.db
