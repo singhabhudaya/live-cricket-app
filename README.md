@@ -7,7 +7,7 @@ It allows starting matches, updating scores ball-by-ball, and viewing live comme
 
 ---
 
-## 🚀 Features
+##  Features
 
 * **Start new matches** with team names.
 * **Live score tracking** with over-by-over updates.
@@ -18,7 +18,7 @@ It allows starting matches, updating scores ball-by-ball, and viewing live comme
 
 ---
 
-## 🖥️ Screenshots
+##  Screenshots
 
 ### Match List & Scoreboard
 
@@ -26,7 +26,7 @@ It allows starting matches, updating scores ball-by-ball, and viewing live comme
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 **Frontend:** React, Tailwind CSS
 **Backend:** NestJS, Prisma, PostgreSQL
@@ -34,7 +34,7 @@ It allows starting matches, updating scores ball-by-ball, and viewing live comme
 
 ---
 
-## ⚙️ Installation & Setup
+##  Installation & Setup
 
 ### Backend
 
@@ -74,7 +74,7 @@ npm run dev
 
 ---
 
-## 🌐 Environment Variables
+##  Environment Variables
 
 ### Backend `.env`
 
@@ -86,7 +86,7 @@ PORT=3000
 
 ---
 
-## 📡 Deployment Commands
+##  Deployment Commands
 
 **Build Command**
 
@@ -99,4 +99,5 @@ npm ci --include=dev && npx prisma generate && npm run build
 ```bash
 bash -c "mkdir -p /data && npx prisma migrate deploy && node dist/main.js"
 ```
+
 
