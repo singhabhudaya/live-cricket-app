@@ -79,8 +79,8 @@ npm run dev
 ### Backend `.env`
 
 ```env
-DATABASE_URL=postgresql://user:password@host:port/dbname
-CORS_ORIGINS=https://your-frontend-domain.com
+DATABASE_URL=postgresql
+CORS_ORIGINS=https://liveappcricket.netlify.app/
 PORT=3000
 ```
 
@@ -99,6 +99,7 @@ npm ci --include=dev && npx prisma generate && npm run build
 ```bash
 bash -c "mkdir -p /data && npx prisma migrate deploy && node dist/main.js"
 ```
+
 
 
 
