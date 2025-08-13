@@ -22,7 +22,7 @@ It allows starting matches, updating scores ball-by-ball, and viewing live comme
 
 ### Match List & Scoreboard
 
-![Match View](./screenshots/match-view.png)
+![Match View](./match-view.png)
 
 ---
 
@@ -99,5 +99,6 @@ npm ci --include=dev && npx prisma generate && npm run build
 ```bash
 bash -c "mkdir -p /data && npx prisma migrate deploy && node dist/main.js"
 ```
+
 
 
